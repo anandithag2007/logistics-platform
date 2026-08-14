@@ -1,21 +1,22 @@
 const db = require("../config/db");
 
 const createShipment = (req, res) => {
-    if (
-  !shipment_name ||
-  !origin ||
-  !destination
-) {
-  return res.status(400).json({
-    message: "All fields are required",
-  });
-}
-    const {
+  const {
     shipment_name,
     origin,
     destination,
     priority,
   } = req.body;
+
+  if (
+    !shipment_name ||
+    !origin ||
+    !destination
+  ) {
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  }
 
   const sql = `
     INSERT INTO shipments
@@ -44,7 +45,6 @@ const createShipment = (req, res) => {
     }
   );
 };
-
 const getAllShipments = (req, res) => {
   const sql = `
     SELECT *
