@@ -267,9 +267,9 @@ function Dashboard() {
                 </td>
               </tr>
             ) : (
-              shipments.map((shipment) => (
+              shipments.map((shipment, index) => (
                 <tr key={shipment.id}>
-                  <td>{shipment.id}</td>
+                  <td>{index + 1}</td>
 
                   <td>{shipment.shipment_name}</td>
 
