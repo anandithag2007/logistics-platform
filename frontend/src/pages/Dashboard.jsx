@@ -271,64 +271,63 @@ function Dashboard() {
             ) : (
               shipments.map((shipment, index) => (
                 <tr key={shipment.id}>
-                  <td>{index + 1}</td>
+  <td>{index + 1}</td>
 
-                  <td>{shipment.tracking_id}</td>
+  <td>
+    <span className="tracking-id">
+      {shipment.tracking_id}
+    </span>
+  </td>
 
-<td>{shipment.shipment_name}</td>
+  <td>{shipment.shipment_name}</td>
 
-                  <td>{shipment.origin}</td>
+  <td>{shipment.origin}</td>
 
-<td>{shipment.destination}</td>
-<td>
-  <span className="tracking-id">
-    {shipment.tracking_id}
-  </span>
-</td>
+  <td>{shipment.destination}</td>
 
-<td>
-  <span
-    className={`priority ${shipment.priority}`}
-  >
-    {shipment.priority}
-  </span>
-</td>
+  <td>
+    <span
+      className={`priority-badge ${shipment.priority}`}
+    >
+      {shipment.priority}
+    </span>
+  </td>
 
-<td>
-  <select
-                      value={shipment.status}
-                      onChange={(e) =>
-                        updateStatus(
-                          shipment.id,
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="PENDING">
-                        PENDING
-                      </option>
+  <td>
+    <select
+      value={shipment.status}
+      onChange={(e) =>
+        updateStatus(
+          shipment.id,
+          e.target.value
+        )
+      }
+    >
+      <option value="PENDING">
+        PENDING
+      </option>
 
-                      <option value="IN_TRANSIT">
-                        IN TRANSIT
-                      </option>
+      <option value="IN_TRANSIT">
+        IN TRANSIT
+      </option>
 
-                      <option value="DELIVERED">
-                        DELIVERED
-                      </option>
-                    </select>
-                  </td>
+      <option value="DELIVERED">
+        DELIVERED
+      </option>
+    </select>
+  </td>
 
-                  <td>
-                    <button
-  className="delete-btn"
-  onClick={() =>
-    deleteShipment(shipment.id)
-  }
->
-  Delete
-</button>
-                  </td>
-                </tr>
+  <td>
+    <button
+      className="delete-btn"
+      onClick={() =>
+        deleteShipment(shipment.id)
+      }
+    >
+      Delete
+    </button>
+  </td>
+</tr>
               ))
             )}
           </tbody>
