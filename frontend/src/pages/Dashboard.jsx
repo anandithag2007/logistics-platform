@@ -55,7 +55,7 @@ function Dashboard() {
           },
         }
       );
-
+      console.log(response.data);
       setShipments(response.data);
     } catch (error) {
       console.error(error);
@@ -254,6 +254,7 @@ function Dashboard() {
               <th>Shipment</th>
               <th>Origin</th>
               <th>Destination</th>
+              <th>Priority</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -262,7 +263,7 @@ function Dashboard() {
           <tbody>
             {shipments.length === 0 ? (
               <tr>
-                <td colSpan="6">
+                <td colSpan="7">
                   🚚 No shipments found. Create your first shipment above.
                 </td>
               </tr>
@@ -275,10 +276,18 @@ function Dashboard() {
 
                   <td>{shipment.origin}</td>
 
-                  <td>{shipment.destination}</td>
+<td>{shipment.destination}</td>
 
-                  <td>
-                    <select
+<td>
+  <span
+    className={`priority ${shipment.priority}`}
+  >
+    {shipment.priority}
+  </span>
+</td>
+
+<td>
+  <select
                       value={shipment.status}
                       onChange={(e) =>
                         updateStatus(

@@ -59,7 +59,14 @@ const result = await db.query(
   SELECT *
   FROM shipments
   WHERE user_id = $1
-  ORDER BY created_at DESC
+  ORDER BY
+CASE priority
+    WHEN 'EXPRESS' THEN 1
+    WHEN 'HIGH' THEN 2
+    WHEN 'MEDIUM' THEN 3
+    WHEN 'LOW' THEN 4
+END,
+created_at DESC
   `,
   [user_id]
 );

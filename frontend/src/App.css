@@ -183,3 +183,29 @@
   }
 }
 
+.priority {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.priority.EXPRESS {
+  background: #ff4d4f;
+  color: white;
+}
+
+.priority.HIGH {
+  background: #ff9800;
+  color: white;
+}
+
+.priority.MEDIUM {
+  background: #2196f3;
+  color: white;
+}
+
+.priority.LOW {
+  background: #4caf50;
+  color: white;
+}
