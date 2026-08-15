@@ -1,114 +1,111 @@
 const db = require("../config/db");
 
-const createShipment = (req, res) => {
-  const {
-    shipment_name,
-    origin,
-    destination,
-    priority,
-  } = req.body;
-
-  if (
-    !shipment_name ||
-    !origin ||
-    !destination
-  ) {
-    return res.status(400).json({
-      message: "All fields are required",
-    });
-  }
-
-  const sql = `
-    INSERT INTO shipments
-    (shipment_name, origin, destination, priority)
-    VALUES (?, ?, ?, ?)
-  `;
-
-  db.query(
-    sql,
-    [
+const createShipment = async (req, res) => {
+  try {
+    const {
       shipment_name,
       origin,
       destination,
       priority,
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          message: err.message,
-        });
-      }
+    } = req.body;
 
-      res.status(201).json({
-        message: "Shipment created successfully",
-      });
-    }
-  );
-};
-const getAllShipments = (req, res) => {
-  const sql = `
-    SELECT *
-    FROM shipments
-    ORDER BY created_at DESC
-  `;
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        message: err.message,
+    if (
+      !shipment_name ||
+      !origin ||
+      !destination
+    ) {
+      return res.status(400).json({
+        message: "All fields are required",
       });
     }
 
-    res.status(200).json(results);
-  });
-};
+    await db.query(
+      `
+      INSERT INTO shipments
+      (shipment_name, origin, destination, priority)
+      VALUES ($1, $2, $3, $4)
+      `,
+      [
+        shipment_name,
+        origin,
+        destination,
+        priority,
+      ]
+    );
 
-const updateShipmentStatus = (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-
-  const sql = `
-    UPDATE shipments
-    SET status = ?
-    WHERE id = ?
-  `;
-
-  db.query(
-    sql,
-    [status, id],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          message: err.message,
-        });
-      }
-
-      res.status(200).json({
-        message: "Shipment status updated",
-      });
-    }
-  );
+    res.status(201).json({
+      message: "Shipment created successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
-const deleteShipment = (req, res) => {
-  const { id } = req.params;
+const getAllShipments = async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT *
+      FROM shipments
+      ORDER BY created_at DESC
+    `);
 
-  const sql = `
-    DELETE FROM shipments
-    WHERE id = ?
-  `;
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        message: err.message,
-      });
-    }
+const updateShipmentStatus = async (
+  req,
+  res
+) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    await db.query(
+      `
+      UPDATE shipments
+      SET status = $1
+      WHERE id = $2
+      `,
+      [status, id]
+    );
+
+    res.status(200).json({
+      message: "Shipment status updated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const deleteShipment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await db.query(
+      `
+      DELETE FROM shipments
+      WHERE id = $1
+      `,
+      [id]
+    );
 
     res.status(200).json({
       message: "Shipment deleted successfully",
     });
-  });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 module.exports = {
