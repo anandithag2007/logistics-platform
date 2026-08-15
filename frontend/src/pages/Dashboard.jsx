@@ -39,9 +39,9 @@ function Dashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-  };
+  localStorage.removeItem("token");
+  navigate("/");
+};
 
   const fetchShipments = async () => {
     try {
@@ -156,7 +156,7 @@ function Dashboard() {
   };
 
   return (
-    <div>
+    <div className="container">
       <Navbar onLogout={handleLogout} />
 
       <div className="stats-grid">
@@ -247,7 +247,7 @@ function Dashboard() {
 
         <br />
 
-        <table border="1">
+        <table>
           <thead>
             <tr>
               <th>ID</th>
@@ -263,7 +263,7 @@ function Dashboard() {
             {shipments.length === 0 ? (
               <tr>
                 <td colSpan="6">
-                  No shipments found
+                  🚚 No shipments found. Create your first shipment above.
                 </td>
               </tr>
             ) : (
@@ -303,14 +303,13 @@ function Dashboard() {
 
                   <td>
                     <button
-                      onClick={() =>
-                        deleteShipment(
-                          shipment.id
-                        )
-                      }
-                    >
-                      Delete
-                    </button>
+  className="delete-btn"
+  onClick={() =>
+    deleteShipment(shipment.id)
+  }
+>
+  Delete
+</button>
                   </td>
                 </tr>
               ))

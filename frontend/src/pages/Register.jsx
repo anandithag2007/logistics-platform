@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useNavigate,
   Link,
@@ -7,7 +7,13 @@ import api from "../services/api";
 
 function Register() {
   const navigate = useNavigate();
+  useEffect(() => {
+  const token = localStorage.getItem("token");
 
+  if (token) {
+    navigate("/dashboard");
+  }
+}, [navigate]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
