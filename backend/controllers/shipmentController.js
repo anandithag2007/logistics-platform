@@ -8,7 +8,7 @@ const createShipment = async (req, res) => {
       destination,
       priority,
     } = req.body;
-
+    const user_id = req.user.id;
     if (
       !shipment_name ||
       !origin ||
@@ -20,18 +20,25 @@ const createShipment = async (req, res) => {
     }
 
     await db.query(
-      `
-      INSERT INTO shipments
-      (shipment_name, origin, destination, priority)
-      VALUES ($1, $2, $3, $4)
-      `,
-      [
-        shipment_name,
-        origin,
-        destination,
-        priority,
-      ]
-    );
+  `
+  INSERT INTO shipments
+  (
+    shipment_name,
+    origin,
+    destination,
+    priority,
+    user_id
+  )
+  VALUES ($1, $2, $3, $4, $5)
+  `,
+  [
+    shipment_name,
+    origin,
+    destination,
+    priority,
+    user_id,
+  ]
+);
 
     res.status(201).json({
       message: "Shipment created successfully",
@@ -45,11 +52,17 @@ const createShipment = async (req, res) => {
 
 const getAllShipments = async (req, res) => {
   try {
-    const result = await db.query(`
-      SELECT *
-      FROM shipments
-      ORDER BY created_at DESC
-    `);
+    const user_id = req.user.id;
+
+const result = await db.query(
+  `
+  SELECT *
+  FROM shipments
+  WHERE user_id = $1
+  ORDER BY created_at DESC
+  `,
+  [user_id]
+);
 
     res.status(200).json(result.rows);
   } catch (error) {
@@ -67,14 +80,17 @@ const updateShipmentStatus = async (
     const { id } = req.params;
     const { status } = req.body;
 
-    await db.query(
-      `
-      UPDATE shipments
-      SET status = $1
-      WHERE id = $2
-      `,
-      [status, id]
-    );
+    const user_id = req.user.id;
+
+await db.query(
+  `
+  UPDATE shipments
+  SET status = $1
+  WHERE id = $2
+  AND user_id = $3
+  `,
+  [status, id, user_id]
+);
 
     res.status(200).json({
       message: "Shipment status updated",
@@ -90,13 +106,16 @@ const deleteShipment = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await db.query(
-      `
-      DELETE FROM shipments
-      WHERE id = $1
-      `,
-      [id]
-    );
+    const user_id = req.user.id;
+
+await db.query(
+  `
+  DELETE FROM shipments
+  WHERE id = $1
+  AND user_id = $2
+  `,
+  [id, user_id]
+);
 
     res.status(200).json({
       message: "Shipment deleted successfully",
