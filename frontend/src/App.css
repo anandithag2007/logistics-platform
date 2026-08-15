@@ -209,3 +209,11 @@
   background: #4caf50;
   color: white;
 }
+
+.tracking-id {
+  font-family: monospace;
+  font-weight: bold;
+  background: #f4f4f4;
+  padding: 4px 8px;
+  border-radius: 6px;
+}

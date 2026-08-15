@@ -251,6 +251,7 @@ function Dashboard() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Tracking ID</th>
               <th>Shipment</th>
               <th>Origin</th>
               <th>Destination</th>
@@ -272,11 +273,18 @@ function Dashboard() {
                 <tr key={shipment.id}>
                   <td>{index + 1}</td>
 
-                  <td>{shipment.shipment_name}</td>
+                  <td>{shipment.tracking_id}</td>
+
+<td>{shipment.shipment_name}</td>
 
                   <td>{shipment.origin}</td>
 
 <td>{shipment.destination}</td>
+<td>
+  <span className="tracking-id">
+    {shipment.tracking_id}
+  </span>
+</td>
 
 <td>
   <span

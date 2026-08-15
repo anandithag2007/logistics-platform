@@ -8,6 +8,14 @@ const createShipment = async (req, res) => {
       destination,
       priority,
     } = req.body;
+    const tracking_id =
+  "TRK-" +
+  new Date().getFullYear() +
+  "-" +
+  Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase();
     const user_id = req.user.id;
     if (
       !shipment_name ||
@@ -22,22 +30,24 @@ const createShipment = async (req, res) => {
     await db.query(
   `
   INSERT INTO shipments
-  (
-    shipment_name,
-    origin,
-    destination,
-    priority,
-    user_id
-  )
-  VALUES ($1, $2, $3, $4, $5)
+(
+  shipment_name,
+  origin,
+  destination,
+  priority,
+  user_id,
+  tracking_id
+)
+VALUES ($1, $2, $3, $4, $5, $6)
   `,
   [
-    shipment_name,
-    origin,
-    destination,
-    priority,
-    user_id,
-  ]
+  shipment_name,
+  origin,
+  destination,
+  priority,
+  user_id,
+  tracking_id,
+]
 );
 
     res.status(201).json({
